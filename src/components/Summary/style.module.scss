@@ -30,3 +30,12 @@
         color: #fff;
     }
 }
+
+.summaryShape{
+    transition: transform 0.2s ease-in;
+
+    &:hover{
+        transform: scale(1.1);
+        box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    }
+}

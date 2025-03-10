@@ -8,7 +8,7 @@ export function Summary(){
         <>
             <div className={Style.container}>
 
-                <div>
+                <div className={Style.summaryShape}>
                     <header>
                         <p>Entradas</p>
                         <img src={incomeImg} alt="" />
@@ -16,7 +16,7 @@ export function Summary(){
                     <strong>R$ 1.000,00</strong>
                 </div>
 
-                <div>
+                <div className={Style.summaryShape}>
                     <header>
                         <p>Saídas</p>
                         <img src={outcomeImg} alt="" />
@@ -24,7 +24,7 @@ export function Summary(){
                     <strong>- R$ 400,00</strong>
                 </div>
 
-                <div className={Style.total}>
+                <div className={`${Style.total} ${Style.summaryShape}`}>
                     <header>
                         <p>Total</p>
                         <img src={totalImg} alt="" />
