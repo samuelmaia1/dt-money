@@ -7,6 +7,7 @@ import './index.css'
 createServer({
   routes(){
     this.namespace = 'api'
+    this.post('/transactions',)
 
     this.get('/transactions', () => {
       return [
@@ -21,7 +22,7 @@ createServer({
         {
           id: '2',
           title: 'Alimentação',
-          amount: 200.00,
+          amount: 2000.30,
           type: 'Outcome',
           category: 'Food',
           date: '13/10/2023'

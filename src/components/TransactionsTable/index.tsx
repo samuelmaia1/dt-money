@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react'
 import Style from './style.module.scss'
 import { Transaction } from '../../interfaces/Transaction'
-import { api } from '../../services/api'
+import { format } from '../../services/numberFormat'
 
-export function TransactionsTable(){
-    const [transactions, setTransactions] = useState<Transaction[]>()
 
-    useEffect(() => {
-        api.get('transactions')
-        .then(response => setTransactions(response.data))
-    })
+interface TransactionsTableProps{
+    transactions: Transaction[]
+}
+
+export function TransactionsTable({transactions}: TransactionsTableProps){
 
     return (
         <table className={Style.container}>
@@ -26,7 +24,7 @@ export function TransactionsTable(){
 
                 {transactions && transactions.map((transaction) => {
                     return (
-                        <TableRow transaction={transaction} />
+                        <TableRow transaction={transaction} key={transaction.id}/>
                     )
                 })}
              
@@ -47,7 +45,7 @@ function TableRow({transaction}: TableRowProps){
                 <td 
                     className={transaction.type == 'Income' ? Style.income : Style.outcome}
                 >
-                    R$ {transaction.amount}
+                    R$ {format(transaction.amount)}
                 </td>
                 <td>{transaction.category}</td>
                 <td>{transaction.date}</td>
