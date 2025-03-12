@@ -49,7 +49,7 @@ export function Summary({transactions}: SummaryProps){
                         <p>Total</p>
                         <img src={totalImg} alt="" />
                     </header>
-                    <strong>{incomes > outcomes ? `R$ ${format(incomes - outcomes)}` : `- R$ ${format(-1 * (incomes - outcomes))}`}</strong>
+                    <strong>{incomes >= outcomes ? `R$ ${format(incomes - outcomes)}` : `- R$ ${format(-1 * (incomes - outcomes))}`}</strong>
                 </div>
             </div>
         </>
