@@ -4,7 +4,7 @@ import {createServer, Model} from 'miragejs'
 import App from './App.tsx'
 import './index.css'
 import { Transaction } from './interfaces/Transaction.ts'
-import { TransactionsProvider } from './context/TransactionsContext.tsx'
+import { TransactionsProvider } from './hooks/useTransactions.tsx'
 
 createServer({
 

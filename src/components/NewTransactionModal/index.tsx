@@ -2,11 +2,10 @@ import Style from './style.module.scss'
 import Modal from 'react-modal'
 import closeImg from '../../assets/closebtn.svg'
 import { FormEvent, useContext, useState } from 'react'
-import { LoadingSpinner } from '../LoadingSpinner'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import { v4 as uuidv4 } from 'uuid'
-import { TransactionsContext } from '../../context/TransactionsContext'
+import { TransactionsContext } from '../../hooks/useTransactions'
 
 interface NewTransactionModalProps{
     isOpen: boolean, 
@@ -21,7 +20,7 @@ export function NewTransactionModal({isOpen, onRequestClose}: NewTransactionModa
     const [amount, setAmount] = useState(0)
     const [type, setType] = useState('Income')
 
-    function handleCreateNewTransaction(event: FormEvent){
+    async function handleCreateNewTransaction(event: FormEvent){
         event.preventDefault()
 
         const data = {
@@ -33,12 +32,14 @@ export function NewTransactionModal({isOpen, onRequestClose}: NewTransactionModa
             date: new Intl.DateTimeFormat('pt-BR').format(new Date())
         }
 
-        addTransaction(data)
+        await addTransaction(data)
 
         setTitle('')
         setCategory('')
         setAmount(0)
         setType('Income')
+
+        onRequestClose()
     }
 
     return (

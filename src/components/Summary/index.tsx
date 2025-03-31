@@ -2,28 +2,31 @@ import Style from './style.module.scss'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import totalImg from '../../assets/total.svg'
-import { Transaction } from '../../interfaces/Transaction'
-import { useEffect, useState } from 'react'
 import { format } from '../../services/numberFormat'
+import { useTransactions } from '../../hooks/useTransactions'
 
-interface SummaryProps{
-    transactions: Transaction[]
-}
+export function Summary(){
 
-export function Summary({transactions}: SummaryProps){
-    const [incomes, setIncomes] = useState<number>(0)
-    const [outcomes, setOutcomes] = useState<number>(0)
+    const {transactions} = useTransactions()
 
-    useEffect(() => {
-        setIncomes(0)
-        setOutcomes(0)
-        transactions.forEach((item) => {
-            if (item.type === 'Income')
-                setIncomes((prev) => {return prev + item.amount})
-            else if (item.type === 'Outcome')
-                setOutcomes((prev) => {return prev + item.amount})
-        })
-    },[transactions])
+    const {total, income, outcome} = transactions.reduce((acc, transaction) => {
+
+        if (transaction.type === 'Income'){
+            acc.income += transaction.amount
+            acc.total += transaction.amount
+        }
+        else {
+            acc.outcome = transaction.amount
+            acc.total -= transaction.amount
+        }
+
+        return acc;
+
+    }, {
+        income: 0,
+        outcome: 0,
+        total: 0
+    })
 
     return (
         <>
@@ -34,7 +37,7 @@ export function Summary({transactions}: SummaryProps){
                         <p>Entradas</p>
                         <img src={incomeImg} alt="" />
                     </header>
-                    <strong>R$ {format(incomes)}</strong>
+                    <strong>R$ {format(income)}</strong>
                 </div>
 
                 <div className={Style.summaryShape}>
@@ -42,7 +45,7 @@ export function Summary({transactions}: SummaryProps){
                         <p>Saídas</p>
                         <img src={outcomeImg} alt="" />
                     </header>
-                    <strong>- R$ {format(outcomes)}</strong>
+                    <strong>- R$ {format(outcome)}</strong>
                 </div>
 
                 <div className={`${Style.total} ${Style.summaryShape}`}>
@@ -50,7 +53,7 @@ export function Summary({transactions}: SummaryProps){
                         <p>Total</p>
                         <img src={totalImg} alt="" />
                     </header>
-                    <strong>{incomes >= outcomes ? `R$ ${format(incomes - outcomes)}` : `- R$ ${format(-1 * (incomes - outcomes))}`}</strong>
+                    <strong>{income >= outcome ? `R$ ${format(total)}` : `- R$ ${format(-1 * total)}`}</strong>
                 </div>
             </div>
         </>

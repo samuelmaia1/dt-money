@@ -1,13 +1,12 @@
 import Style from './style.module.scss'
 import { Transaction } from '../../interfaces/Transaction'
 import { format } from '../../services/numberFormat'
+import { useContext } from 'react'
+import { TransactionsContext } from '../../hooks/useTransactions'
 
+export function TransactionsTable(){
 
-interface TransactionsTableProps{
-    transactions: Transaction[]
-}
-
-export function TransactionsTable({transactions}: TransactionsTableProps){
+    const {transactions} = useContext(TransactionsContext)
 
     return (
         <table className={Style.container}>
