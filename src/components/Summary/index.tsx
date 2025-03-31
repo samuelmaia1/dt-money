@@ -7,26 +7,9 @@ import { useTransactions } from '../../hooks/useTransactions'
 
 export function Summary(){
 
-    const {transactions} = useTransactions()
+    const {summary} = useTransactions()
 
-    const {total, income, outcome} = transactions.reduce((acc, transaction) => {
-
-        if (transaction.type === 'Income'){
-            acc.income += transaction.amount
-            acc.total += transaction.amount
-        }
-        else {
-            acc.outcome = transaction.amount
-            acc.total -= transaction.amount
-        }
-
-        return acc;
-
-    }, {
-        income: 0,
-        outcome: 0,
-        total: 0
-    })
+    const {income, outcome, total} = summary
 
     return (
         <>

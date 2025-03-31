@@ -8,7 +8,12 @@ interface TransactionsContextProps{
 
 interface TransactionsProviderValue{
     transactions: Transaction[],
-    addTransaction: (transaction: Transaction) => Promise<void>
+    addTransaction: (transaction: Transaction) => Promise<void>,
+    summary: {
+        income: number,
+        outcome: number,
+        total: number
+    }
 }
 
 export const TransactionsContext = createContext<TransactionsProviderValue>({} as TransactionsProviderValue)
@@ -25,6 +30,25 @@ export function TransactionsProvider({children}: TransactionsContextProps) {
 
     }, [])
 
+    const summary = transactions.reduce((acc, transaction) => {
+
+        if (transaction.type === 'Income'){
+            acc.income += transaction.amount
+            acc.total += transaction.amount
+        }
+        else {
+            acc.outcome += transaction.amount
+            acc.total -= transaction.amount
+        }
+
+        return acc;
+
+    }, {
+        income: 0,
+        outcome: 0,
+        total: 0
+    })
+
     async function addTransaction(newTransaction: Transaction) {
 
         const response = await api.post('/transactions', newTransaction)
@@ -35,7 +59,7 @@ export function TransactionsProvider({children}: TransactionsContextProps) {
     }
 
     return (
-        <TransactionsContext.Provider value={{transactions, addTransaction}}>
+        <TransactionsContext.Provider value={{transactions, addTransaction, summary}}>
             {children}
         </TransactionsContext.Provider>
     )

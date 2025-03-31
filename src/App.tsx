@@ -1,16 +1,13 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import './App.css'
 import { Header } from './components/Header'
 import { Dashboard } from './components/Dashboard'
 import Modal from 'react-modal'
 import { NewTransactionModal } from './components/NewTransactionModal'
-import { TransactionsContext } from './hooks/useTransactions'
 
 Modal.setAppElement('#root')
 
 function App() {
-
-  const {transactions} = useContext(TransactionsContext)
 
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] = useState(false)
 
@@ -29,7 +26,7 @@ function App() {
         onOpenNewTransactionModal={handleOpenNewTransactionModal}
       />
 
-      <Dashboard transactions={transactions}/>
+      <Dashboard />
 
       <NewTransactionModal 
         isOpen={isNewTransactionModalOpen} 
