@@ -7,8 +7,6 @@ interface HeaderProps{
 }
 
 export function Header({onOpenNewTransactionModal}: HeaderProps){
-    
-
     return (
         <header className={Style.header}>
             <div className={Style.content}>
@@ -16,7 +14,6 @@ export function Header({onOpenNewTransactionModal}: HeaderProps){
                 <button type="button" onClick={onOpenNewTransactionModal}>
                     Nova transação
                 </button>
-                
             </div>
         </header>
     )

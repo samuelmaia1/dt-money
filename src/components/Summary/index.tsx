@@ -15,7 +15,8 @@ export function Summary({transactions}: SummaryProps){
     const [outcomes, setOutcomes] = useState<number>(0)
 
     useEffect(() => {
-        console.log(transactions)
+        setIncomes(0)
+        setOutcomes(0)
         transactions.forEach((item) => {
             if (item.type === 'Income')
                 setIncomes((prev) => {return prev + item.amount})

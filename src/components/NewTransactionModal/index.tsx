@@ -1,36 +1,44 @@
 import Style from './style.module.scss'
 import Modal from 'react-modal'
 import closeImg from '../../assets/closebtn.svg'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 import { LoadingSpinner } from '../LoadingSpinner'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
-import { api } from '../../services/api'
+import { v4 as uuidv4 } from 'uuid'
+import { TransactionsContext } from '../../context/TransactionsContext'
 
 interface NewTransactionModalProps{
     isOpen: boolean, 
-    onRequestClose: () => void
+    onRequestClose: () => void,
 }
 
 export function NewTransactionModal({isOpen, onRequestClose}: NewTransactionModalProps){
+    const {addTransaction} = useContext(TransactionsContext)
+
     const [title, setTitle] = useState('')
     const [category, setCategory] = useState('')
-    const [value, setValue] = useState(0)
+    const [amount, setAmount] = useState(0)
     const [type, setType] = useState('Income')
-    
-    const [isLoading, setIsLoading] = useState(false)
 
     function handleCreateNewTransaction(event: FormEvent){
         event.preventDefault()
 
         const data = {
+            id: uuidv4(),
             title,
             category,
-            value,
-            type
+            amount,  
+            type,
+            date: new Intl.DateTimeFormat('pt-BR').format(new Date())
         }
 
-        api.post('/transactions', data)
+        addTransaction(data)
+
+        setTitle('')
+        setCategory('')
+        setAmount(0)
+        setType('Income')
     }
 
     return (
@@ -62,8 +70,8 @@ export function NewTransactionModal({isOpen, onRequestClose}: NewTransactionModa
                     <input 
                         type="number" 
                         placeholder='Valor'
-                        value={value}
-                        onChange={event => setValue(Number(event.target.value))}
+                        value={amount}
+                        onChange={event => setAmount(Number(event.target.value))}
                     />
 
                     <div className={Style.transactionTypeContainer}>
@@ -101,7 +109,7 @@ export function NewTransactionModal({isOpen, onRequestClose}: NewTransactionModa
                     />
 
                     <button type="submit" className={Style.buttonSubmit}>
-                        {!isLoading ? 'Cadastrar' : <LoadingSpinner />}
+                        Cadastrar
                     </button>
                 </form>
             </div>

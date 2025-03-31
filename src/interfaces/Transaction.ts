@@ -6,3 +6,10 @@ export interface Transaction{
     type: string,
     category: string
 }
+
+export interface TransacctionInput{
+    title: string,
+    amount: number,
+    type: string,
+    category: string
+}

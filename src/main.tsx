@@ -4,6 +4,7 @@ import {createServer, Model} from 'miragejs'
 import App from './App.tsx'
 import './index.css'
 import { Transaction } from './interfaces/Transaction.ts'
+import { TransactionsProvider } from './context/TransactionsContext.tsx'
 
 createServer({
 
@@ -17,7 +18,7 @@ createServer({
       title: 'Freelance website',
       type: 'Income',
       category: 'Dev',
-      amount: 5000,
+      amount: 3000,
       date: new Intl.DateTimeFormat('pt-BR').format(new Date()),
     });
 
@@ -47,6 +48,8 @@ createServer({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <TransactionsProvider>
+      <App />
+    </TransactionsProvider>
   </StrictMode>,
 )
