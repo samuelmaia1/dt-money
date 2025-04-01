@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import {createServer, Model} from 'miragejs'
+import {createServer, Model, Response} from 'miragejs'
 import App from './App.tsx'
 import './index.css'
 import { Transaction } from './interfaces/Transaction.ts'
@@ -42,6 +42,19 @@ createServer({
 
     this.get('/transactions', () => {
       return this.schema.all('transaction')
+    })
+
+    this.delete('/transactions/:id', (schema, request) => {
+      const id = request.params.id
+      const transaction = schema.find('transaction', id)
+
+      if (transaction) {
+        transaction.destroy()
+        return new Response(204)
+      }
+      else {
+        return new Response(404, {}, {error: 'Transação não encontrada'})
+      }
     })
   }
 })

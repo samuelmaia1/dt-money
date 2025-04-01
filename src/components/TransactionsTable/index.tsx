@@ -1,8 +1,14 @@
-import Style from './style.module.scss'
-import { Transaction } from '../../interfaces/Transaction'
-import { format } from '../../services/numberFormat'
 import { useContext } from 'react'
-import { TransactionsContext } from '../../hooks/useTransactions'
+
+import { TransactionsContext, useTransactions } from '../../hooks/useTransactions'
+
+import { Transaction } from '../../interfaces/Transaction'
+
+import { format } from '../../services/numberFormat'
+
+import Style from './style.module.scss'
+
+import deleteImg from '../../assets/delete.png'
 
 export function TransactionsTable(){
 
@@ -16,6 +22,7 @@ export function TransactionsTable(){
                     <th>Valor</th>
                     <th>Categoria</th>
                     <th>Data</th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -37,6 +44,9 @@ interface TableRowProps{
 }
 
 function TableRow({transaction}: TableRowProps){
+    
+    const {removeTransaction} = useTransactions()
+
     return (
         <>
             <tr>
@@ -48,6 +58,11 @@ function TableRow({transaction}: TableRowProps){
                 </td>
                 <td>{transaction.category}</td>
                 <td>{transaction.date}</td>
+                <td>
+                    <button onClick={() => removeTransaction(transaction.id)} className={Style.deleteButton}>
+                        <img src={deleteImg} alt="Excluir transação" />
+                    </button>
+                </td>
             </tr>
         </>
     )

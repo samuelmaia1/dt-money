@@ -1,6 +1,8 @@
-import { createContext, useState, useEffect, ReactNode, useContext } from "react";
-import { Transaction } from "../interfaces/Transaction";
-import { api } from "../services/api";
+import { createContext, useState, useEffect, ReactNode, useContext } from "react"
+
+import { Transaction } from "../interfaces/Transaction"
+
+import { api } from "../services/api"
 
 interface TransactionsContextProps{
     children: ReactNode
@@ -13,7 +15,8 @@ interface TransactionsProviderValue{
         income: number,
         outcome: number,
         total: number
-    }
+    },
+    removeTransaction: (transactionId: string) => Promise<void>
 }
 
 export const TransactionsContext = createContext<TransactionsProviderValue>({} as TransactionsProviderValue)
@@ -55,11 +58,17 @@ export function TransactionsProvider({children}: TransactionsContextProps) {
         const {transaction} = response.data
 
         setTransactions((prev) => {return [...prev, transaction]})
+    }
 
+    async function removeTransaction(transactionId: string) {
+
+        await api.delete(`/transactions/${transactionId}`)
+
+        setTransactions((prev) => {return prev.filter((item) => item.id !== transactionId)})
     }
 
     return (
-        <TransactionsContext.Provider value={{transactions, addTransaction, summary}}>
+        <TransactionsContext.Provider value={{transactions, addTransaction, summary, removeTransaction}}>
             {children}
         </TransactionsContext.Provider>
     )
